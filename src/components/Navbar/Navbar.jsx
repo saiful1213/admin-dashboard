@@ -15,7 +15,7 @@ import { IoIosArrowDown } from "react-icons/io";
 
 const Navbar = () => {
     return (
-        <div className="border-b w-full h-16 flex items-center gap-10 px-5 py-2 rounded-b justify-between">
+        <div className="border-b w-full h-16 flex items-center md:gap-10 px-1 md:px-5 py-2 rounded-b justify-between">
             <div className="flex gap-5">
                 <div className="flex items-center relative">
                     <IoSearchSharp className="absolute left-3" />

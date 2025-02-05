@@ -2,6 +2,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Outlet } from "react-router";
 
 const DashboardLayout = () => {
     return (
@@ -9,8 +10,11 @@ const DashboardLayout = () => {
             <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
                 <SidebarProvider>
                     <AppSidebar />
-                    <SidebarTrigger />
-                    <Navbar />
+                    <div className="w-full">
+                        <SidebarTrigger />
+                        <Navbar />
+                        <Outlet />
+                    </div>
                 </SidebarProvider>
             </ThemeProvider>
         </div>

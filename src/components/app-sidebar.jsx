@@ -11,8 +11,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Link } from "react-router";
-
+import { NavLink } from "react-router";
+import "../components/app-sidebar.css"
 
 const items = [
     {
@@ -41,10 +41,10 @@ export function AppSidebar() {
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
-                                        <Link to={item.url}>
+                                        <NavLink to={item.url}>
                                             {item.icon}
                                             <span>{item.title}</span>
-                                        </Link>
+                                        </NavLink>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
