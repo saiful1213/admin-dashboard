@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table"
 import { FiEye } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 const Users = () => {
     const { data, isPending } = useQuery({
@@ -46,9 +47,11 @@ const Users = () => {
                                     <TableCell>{email}</TableCell>
                                     <TableCell>{address.city}</TableCell>
                                     <TableCell className="text-right">
-                                        <Button variant="outline">
-                                            <FiEye />
-                                        </Button>
+                                        <Link to={`/users/${id}`}>
+                                            <Button variant="outline">
+                                                <FiEye />
+                                            </Button>
+                                        </Link>
                                     </TableCell>
                                 </TableRow>
                             )
