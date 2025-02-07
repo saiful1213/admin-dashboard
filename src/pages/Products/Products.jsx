@@ -33,6 +33,7 @@ import { useState } from "react";
 
 const Products = () => {
     const [modal, setModal] = useState(false);
+    const [deleteProductId, setDeleteProductId] = useState('');
 
     const { data, isPending } = useQuery({
         queryKey: [],
@@ -44,8 +45,19 @@ const Products = () => {
 
     if (isPending) return <Loading />;
 
-    const handleConfirmation = () => {
+    const handleConfirmation = id => {
+        setModal(true);
+        setDeleteProductId(id)
+    }
 
+    const handleDeleteProduct = () => {
+        fetch(`https://api.restful-api.dev/objects/${deleteProductId}`, {
+            method: 'DELETE'
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+            })
     }
 
     return (
@@ -93,7 +105,7 @@ const Products = () => {
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
-                                        <Button variant="destructive" className="ml-2" onClick={handleConfirmation}>
+                                        <Button variant="destructive" className="ml-2" onClick={() => handleConfirmation(id)}>
                                             <Trash2 />
                                         </Button>
                                     </TableCell>
@@ -103,18 +115,18 @@ const Products = () => {
                     }
                 </TableBody>
             </Table>
-            <AlertDialog>
+            <AlertDialog open={modal} onOpenChange={(modal) => setModal(modal)}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete your account
+                            This action cannot be undone. This will permanently delete your products
                             and remove your data from our servers.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction>Continue</AlertDialogAction>
+                        <AlertDialogCancel onClick={() => setModal(false)}>Cancel</AlertDialogCancel>
+                        <AlertDialogAction className="bg-red-500" onClick={handleDeleteProduct}>Continue</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
