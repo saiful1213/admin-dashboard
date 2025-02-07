@@ -1,7 +1,10 @@
 import DashboardLayout from "@/layout/DashboardLayout";
 import AddProduct from "@/pages/AddProduct/AddProduct";
+import ErrorPage from "@/pages/ErrorPage/ErrorPage";
+import Login from "@/pages/Login/Login";
 import ProductDetails from "@/pages/ProductDetails/ProductDetails";
 import Products from "@/pages/Products/Products";
+import Register from "@/pages/Register/Register";
 import UserDetails from "@/pages/UserDetails/UserDetails";
 import Users from "@/pages/Users/Users";
 import { createBrowserRouter, Navigate } from "react-router";
@@ -10,7 +13,7 @@ const Routes = createBrowserRouter([
     {
         path: '/',
         element: <DashboardLayout />,
-        errorElement: 'error',
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: '/',
@@ -42,11 +45,11 @@ const Routes = createBrowserRouter([
     },
     {
         path: '/login',
-        element: 'login'
+        element: <Login />
     },
     {
-        path: 'registration',
-        element: 'registration'
+        path: '/register',
+        element: <Register />
     }
 ])
 

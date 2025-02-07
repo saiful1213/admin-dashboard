@@ -28,22 +28,28 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { FeatureContext } from "@/providers/FeatureProvider";
 
 
 const Products = () => {
+    const [searchText] = useContext(FeatureContext);
     const [modal, setModal] = useState(false);
     const [deleteProductId, setDeleteProductId] = useState('');
 
-    const { data, isPending } = useQuery({
+    const { data: products, isPending } = useQuery({
         queryKey: [],
         queryFn: async () => {
-            const users = await fetch('https://api.restful-api.dev/objects');
-            return users.json();
+            const res = await fetch('https://api.restful-api.dev/objects');
+            return res.json();
         }
     })
 
     if (isPending) return <Loading />;
+
+    const filteredProducts = products?.filter(product =>
+        product.name.toLowerCase().includes(searchText.toLowerCase())
+    )
 
     const handleConfirmation = id => {
         setModal(true);
@@ -63,7 +69,7 @@ const Products = () => {
     return (
         <div className="mb-12">
             <div className="flex justify-between items-center">
-                <h1 className='text-2xl font-semibold my-6'>Total Products: {data.length}</h1>
+                <h1 className='text-2xl font-semibold my-6'>Total Products: {products?.length}</h1>
                 <Link to={`/add-product`}>
                     <Button className="bg-blue-500 text-white"><Plus />Add Product</Button>
                 </Link>
@@ -81,8 +87,8 @@ const Products = () => {
                 </TableHeader>
                 <TableBody>
                     {
-                        data?.map((user, idx) => {
-                            const { id, name, data } = user || {};
+                        filteredProducts?.map((product, idx) => {
+                            const { id, name, data } = product || {};
                             return (
                                 <TableRow key={id}>
                                     <TableCell className="font-medium">{idx + 1}</TableCell>

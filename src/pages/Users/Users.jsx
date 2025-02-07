@@ -12,21 +12,29 @@ import { FiEye } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useContext } from "react";
+import { FeatureContext } from "@/providers/FeatureProvider";
 
 const Users = () => {
-    const { data, isPending } = useQuery({
-        queryKey: [],
+    const [searchText] = useContext(FeatureContext);
+
+    const { data: users, isPending } = useQuery({
+        queryKey: ['users'],
         queryFn: async () => {
-            const users = await fetch('https://jsonplaceholder.typicode.com/users');
-            return users.json();
+            const res = await fetch('https://jsonplaceholder.typicode.com/users');
+            return res.json();
         }
     })
 
     if (isPending) return <Loading />;
 
+    const filteredUsers = users?.filter(user =>
+        user.name.toLowerCase().includes(searchText.toLowerCase())
+    )
+
     return (
         <div className="mb-12">
-            <h1 className='text-2xl font-semibold my-6'>Total Users: {data.length}</h1>
+            <h1 className='text-2xl font-semibold my-6'>Total Users: {users?.length}</h1>
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -37,16 +45,16 @@ const Users = () => {
                         <TableHead className="text-right">View Details</TableHead>
                     </TableRow>
                 </TableHeader>
-                <TableBody>
-                    {
-                        data?.map((user, idx) => {
+                {
+                    filteredUsers.length > 0 ? <TableBody>{
+                        filteredUsers?.map((user, idx) => {
                             const { id, name, email, address } = user;
                             return (
                                 <TableRow key={id}>
                                     <TableCell className="font-medium">{idx + 1}</TableCell>
                                     <TableCell>{name}</TableCell>
                                     <TableCell>{email}</TableCell>
-                                    <TableCell>{address.city}</TableCell>
+                                    <TableCell>{address?.city}</TableCell>
                                     <TableCell className="text-right">
                                         <TooltipProvider>
                                             <Tooltip>
@@ -65,9 +73,11 @@ const Users = () => {
                                     </TableCell>
                                 </TableRow>
                             )
-                        })
-                    }
-                </TableBody>
+                        })}
+                    </TableBody>
+                        :
+                        <p className="mt-24">No matching users found</p>
+                }
             </Table>
         </div>
     )
