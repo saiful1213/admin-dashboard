@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import {
     Tooltip,
     TooltipContent,
+    TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Link } from "react-router";
@@ -37,14 +38,16 @@ const Navbar = () => {
                 <ModeToggle />
                 {
                     user ? <>
-                        <Tooltip>
-                            <TooltipTrigger>
-                                <img src={`${user.photoURL || 'https://github.com/shadcn.png'}`} alt="user profile" className="h-10 w-10 rounded-full hidden sm:block" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p className="hidden sm:block">{user?.displayName}</p>
-                            </TooltipContent>
-                        </Tooltip>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <img src={`${user.photoURL || 'https://github.com/shadcn.png'}`} alt="user profile" className="h-10 w-10 rounded-full hidden sm:block" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p className="hidden sm:block">{user?.displayName}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
                         <Button onClick={handleSignOut} variant="outline" className="font-bold">
                             Log Out <RiLoginBoxLine />
                         </Button>
