@@ -17,7 +17,7 @@ const UserDetails = () => {
     const { name, email, address, phone, website, company } = user || {};
 
     return (
-        <div>
+        <>
             <h1 className='text-2xl font-semibold my-6'>User Details </h1>
             <Card>
                 <CardHeader>
@@ -35,7 +35,7 @@ const UserDetails = () => {
                     <p className="flex items-center gap-2"><BiSolidInstitution /><strong>Company:</strong> {company.name}</p>
                 </CardFooter>
             </Card>
-        </div>
+        </>
     )
 }
 

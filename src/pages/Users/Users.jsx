@@ -11,6 +11,7 @@ import {
 import { FiEye } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const Users = () => {
     const { data, isPending } = useQuery({
@@ -47,11 +48,20 @@ const Users = () => {
                                     <TableCell>{email}</TableCell>
                                     <TableCell>{address.city}</TableCell>
                                     <TableCell className="text-right">
-                                        <Link to={`/users/${id}`}>
-                                            <Button variant="outline">
-                                                <FiEye />
-                                            </Button>
-                                        </Link>
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger>
+                                                    <Link to={`/users/${id}`}>
+                                                        <Button variant="outline">
+                                                            <FiEye />
+                                                        </Button>
+                                                    </Link>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>View Details</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
                                     </TableCell>
                                 </TableRow>
                             )

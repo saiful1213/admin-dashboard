@@ -11,9 +11,29 @@ import {
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { FiEye } from "react-icons/fi";
-import { Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { useState } from "react";
+
 
 const Products = () => {
+    const [modal, setModal] = useState(false);
+
     const { data, isPending } = useQuery({
         queryKey: [],
         queryFn: async () => {
@@ -24,9 +44,18 @@ const Products = () => {
 
     if (isPending) return <Loading />;
 
+    const handleConfirmation = () => {
+
+    }
+
     return (
         <div className="mb-12">
-            <h1 className='text-2xl font-semibold my-6'>Total Products: {data.length}</h1>
+            <div className="flex justify-between items-center">
+                <h1 className='text-2xl font-semibold my-6'>Total Products: {data.length}</h1>
+                <Link to={`/add-product`}>
+                    <Button className="bg-blue-500 text-white"><Plus />Add Product</Button>
+                </Link>
+            </div>
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -50,12 +79,21 @@ const Products = () => {
                                     <TableCell>{data?.Color || data?.color}</TableCell>
                                     <TableCell>{data?.Capacity}</TableCell>
                                     <TableCell className="text-right">
-                                        <Link to={`/users/${id}`}>
-                                            <Button variant="outline">
-                                                <FiEye />
-                                            </Button>
-                                        </Link>
-                                        <Button variant="destructive" className="ml-2">
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger>
+                                                    <Link to={`/products/${id}`}>
+                                                        <Button variant="outline">
+                                                            <FiEye />
+                                                        </Button>
+                                                    </Link>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>View Details</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                        <Button variant="destructive" className="ml-2" onClick={handleConfirmation}>
                                             <Trash2 />
                                         </Button>
                                     </TableCell>
@@ -65,6 +103,21 @@ const Products = () => {
                     }
                 </TableBody>
             </Table>
+            <AlertDialog>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete your account
+                            and remove your data from our servers.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
 }

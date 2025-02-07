@@ -1,4 +1,6 @@
 import DashboardLayout from "@/layout/DashboardLayout";
+import AddProduct from "@/pages/AddProduct/AddProduct";
+import ProductDetails from "@/pages/ProductDetails/ProductDetails";
 import Products from "@/pages/Products/Products";
 import UserDetails from "@/pages/UserDetails/UserDetails";
 import Users from "@/pages/Users/Users";
@@ -8,6 +10,7 @@ const Routes = createBrowserRouter([
     {
         path: '/',
         element: <DashboardLayout />,
+        errorElement: 'error',
         children: [
             {
                 path: '/',
@@ -25,8 +28,25 @@ const Routes = createBrowserRouter([
             {
                 path: '/products',
                 element: <Products />
+            },
+            {
+                path: '/add-product',
+                element: <AddProduct />
+            },
+            {
+                path: '/products/:id',
+                element: <ProductDetails />,
+                loader: ({ params }) => fetch(`https://api.restful-api.dev/objects/${params.id}`)
             }
         ]
+    },
+    {
+        path: '/login',
+        element: 'login'
+    },
+    {
+        path: 'registration',
+        element: 'registration'
     }
 ])
 
